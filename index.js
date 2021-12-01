@@ -3,7 +3,21 @@ var app = express()
 var router = express.Router()
 
 
+const checkDate=((request, response, next) => {
+    
+        let dt = Date.now()
+        let dateConn = new Date(dt)
+        if (dateConn.getDay()==0 || dateConn.getDay()==6 || 
+        dateConn.getHours()<9 || dateConn.getHours()>18){
+        response.send('Vous êtes en dehors des horaires de travail');
+        return;
+        }
+        next();
+     
+    
+})
 
+app.use(checkDate)
 app.get('/', (request, response) => {
     response.sendFile(__dirname+"/pages/home.html")
 });
@@ -16,8 +30,8 @@ app.get('/services', (request, response) => {
 
 
 
-app.listen(3000, ()=>{
-    console.log('Running on port 3000');
+app.listen(5000, ()=>{
+    console.log('Running on port 5000');
 })
 
 
